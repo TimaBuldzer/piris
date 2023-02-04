@@ -2,24 +2,48 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 
-class MaritalStatus(models.TextChoices):
-    married = 'married', 'Женат/Замужем'
-    divorced = 'divorced', 'Разведен/Разведена'
-    widowed = 'widowed', 'Вдовец/Вдова'
-    not_married = 'not_married', 'Не женат/Не замужем'
+class City(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Город'
+        verbose_name_plural = 'Города'
 
 
-class DisabilityStatus(models.TextChoices):
-    not_disabled = 'not_disabled', 'Инвалидность отсуствует'
-    first_group = 'first_group', 'Первая группа инвалидности'
-    second_group = 'second_group', 'Вторая группа инвалидности'
-    third_group = 'third_group', 'Третья группа инвалидности'
+class MaritalStatus(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Семейное положение'
+        verbose_name_plural = 'Семейные положения'
 
 
-class Citizenship(models.TextChoices):
-    uzbek = 'uzbek', 'Узбек'
-    belarussian = 'belarussian', 'Белорус'
-    russian = 'russian', 'Русский'
+class Citizenship(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Гражданство'
+        verbose_name_plural = 'Гражданства'
+
+
+class Disability(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Инвалидность'
+        verbose_name_plural = 'Инвалидности'
 
 
 alpha = RegexValidator(r'^[а-яА-Я]*$', 'Данное поле должно состоять исключительно из букв')
@@ -38,8 +62,10 @@ class Client(models.Model):
     passport_issuer = models.CharField(max_length=250, verbose_name='Кем выдан')
     passport_issue_at = models.DateField(verbose_name='Дата выдачи')
     id_number = models.CharField(max_length=100, verbose_name='Идентификационный номер', unique=True)
-    birth_city = models.CharField(max_length=250, verbose_name='Место рождения')
-    current_city = models.CharField(max_length=250, verbose_name='Город фактического проживания')
+    birth_city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Место рождения',
+                                   related_name='birth_city')
+    current_city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Город фактического проживания',
+                                     related_name='current_city')
     current_live_address = models.CharField(max_length=250, verbose_name='Адрес фактического проживания')
     home_phone_number = models.CharField(default='', null=True, blank=True, max_length=25,
                                          verbose_name='Телефон домашний', validators=[phone_number_regex])
@@ -48,15 +74,18 @@ class Client(models.Model):
     email = models.EmailField(default='', null=True, blank=True, verbose_name='Электронная почта')
     work_place = models.CharField(max_length=250, default='', null=True, blank=True, verbose_name='Место работы')
     work_occupation = models.CharField(max_length=250, default='', null=True, blank=True, verbose_name='Должность')
-    city_of_residence = models.CharField(max_length=250, verbose_name='Город прописки')
-    marital_status = models.CharField(max_length=250, verbose_name="Семейное положение", choices=MaritalStatus.choices)
-    citizenship = models.CharField(max_length=250, verbose_name='Гражданство', choices=Citizenship.choices)
-    is_disabled = models.CharField(max_length=250, choices=DisabilityStatus.choices, verbose_name='Инвалидность')
+    city_of_residence = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Город прописки',
+                                          related_name='city_of_residence')
+    marital_status = models.ForeignKey(MaritalStatus, on_delete=models.CASCADE, verbose_name="Семейное положение")
+    citizenship = models.ForeignKey(Citizenship, on_delete=models.CASCADE, verbose_name='Гражданство')
+    disability = models.ForeignKey(Disability, on_delete=models.CASCADE, verbose_name='Инвалидность')
     is_retired = models.BooleanField(verbose_name='Пенсионер')
     monthly_income = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True,
                                          verbose_name='Ежемесячный доход')
 
     class Meta:
+        verbose_name = 'Клиент'
+        verbose_name_plural = 'Клиенты'
         unique_together = ('first_name', 'surname', 'father_name')
 
     def __str__(self):

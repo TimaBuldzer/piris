@@ -152,7 +152,11 @@
             </div>
             <div class="form-group">
                 <label for="birth_city">Место рождения</label>
-                <input required type="text" id="birth_city" name="birth_city" class="form-control">
+                <select required name="birth_city" id="birth_city" class="form-control">
+                    {% for city in cities %}
+                        <option value="{{ city.id }}">{{ city.name }}</option>
+                    {% endfor %}
+                </select>
                 {% if form.errors %}
                     {% for error in form.birth_city.errors %}
                         <div class="alert alert-danger">
@@ -163,12 +167,10 @@
             </div>
             <div class="form-group">
                 <label for="current_city">Город фактического проживания</label>
-                <select required name="current_city" id="current_city">
-                    <option value="Минск">Минск</option>
-                    <option value="Брест">Брест</option>
-                    <option value="Лида">Лида</option>
-                    <option value="Могилев">Могилев</option>
-                    <option value="Ташкент">Ташкент</option>
+                <select required name="current_city" id="current_city" class="form-control">
+                    {% for city in cities %}
+                        <option value="{{ city.id }}">{{ city.name }}</option>
+                    {% endfor %}
                 </select>
                 {% if form.errors %}
                     {% for error in form.current_city.errors %}
@@ -250,12 +252,10 @@
             </div>
             <div class="form-group">
                 <label for="city_of_residence">Город прописки</label>
-                <select required name="city_of_residence" id="city_of_residence">
-                    <option value="Минск">Минск</option>
-                    <option value="Брест">Брест</option>
-                    <option value="Лида">Лида</option>
-                    <option value="Могилев">Могилев</option>
-                    <option value="Ташкент">Ташкент</option>
+                <select required name="city_of_residence" id="city_of_residence" class="form-control">
+                    {% for city in cities %}
+                        <option value="{{ city.id }}">{{ city.name }}</option>
+                    {% endfor %}
                 </select>
                 {% if form.errors %}
                     {% for error in form.city_of_residence.errors %}
@@ -268,32 +268,30 @@
             <div class="form-group">
                 <label for="marital_status">Семейное положение</label>
                 <select required name="marital_status" id="marital_status" class="form-control">
-                    <option value="married">Женат/Замужем</option>
-                    <option value="divorced">Разведен/Разведена</option>
-                    <option value="widowed">Вдовец/Вдова</option>
-                    <option value="not_married">Не женат/Не замужем</option>
+                    {% for status in marital_statuses %}
+                        <option value="{{ status.id }}">{{ status.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="form-group">
                 <label for="citizenship">Гражданство</label>
                 <select required name="citizenship" id="citizenship" class="form-control">
-                    <option value="uzbek">Узбек</option>
-                    <option value="belarussian">Белорус</option>
-                    <option value="russian">Русский</option>
+                    {% for citizenship in citizenships %}
+                        <option value="{{ citizenship.id }}">{{ citizenship.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="form-group">
                 <label for="is_disabled">Инвалидность</label>
-                <select required name="is_disabled" id="is_disabled" class="form-control">
-                    <option value="not_disabled">Инвалидность отсуствует</option>
-                    <option value="first_group">Первая группа инвалидности</option>
-                    <option value="second_group">Вторая группа инвалидности</option>
-                    <option value="third_group">Третья группа инвалидности</option>
+                <select required name="disability" id="disability" class="form-control">
+                    {% for disability in disabilities %}
+                        <option value="{{ disability.id }}">{{ disability.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="form-group">
                 <label for="name">Пенсионер</label>
-                <input required type="checkbox" id="name" name="name">
+                <input type="checkbox" id="name" name="name">
             </div>
             <div class="form-group">
                 <label for="name">Ежемесячный доход</label>
