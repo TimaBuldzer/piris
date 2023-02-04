@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+{% block style %}
+    <style>
+        input {
+            font-family: monospace;
+        }
+
+        label {
+            display: block;
+        }
+
+        div {
+            margin: 0 0 1rem 0;
+        }
+
+        .shell {
+            position: relative;
+            line-height: 1;
+        }
+
+        .shell span {
+            position: absolute;
+            left: 3px;
+            top: 1px;
+            color: #ccc;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shell span i {
+            font-style: normal;
+            /* any of these 3 will work */
+            color: transparent;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        input.masked,
+        .shell span {
+            font-size: 16px;
+            font-family: monospace;
+            padding-right: 10px;
+            background-color: transparent;
+            text-transform: uppercase;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="d-flex align-items-center justify-content-center">
+        <form method="POST" class="mt-5">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="first_name">Имя</label>
+                <input required value="{{ object.first_name }}" type="text" id="first_name" name="first_name"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.first_name.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="surname">Фамилия</label>
+                <input required value="{{ object.surname }}" type="text" id="surname" name="surname"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.surname.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="father_name">Отчество</label>
+                <input required value="{{ object.father_name }}" type="text" id="father_name" name="father_name"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.father_name.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="birth_at">Дата рождения</label>
+                <input required value="{{ object.birth_at|date:'Y-m-d' }}" type="date" id="birth_at" name="birth_at"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.birth_at.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="passport_series">Серия паспорта</label>
+                <input required value="{{ object.passport_series }}" type="text" id="passport_series"
+                       name="passport_series"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.passport_series.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="passport_number">Номер паспорта</label>
+                <input required value="{{ object.passport_number }}" type="text" id="passport_number"
+                       name="passport_number" placeholder="XXXXXXX" pattern="[0-9]{7}"
+                       data-valid-example="1234567"
+                       class="form-control masked">
+                {% if form.errors %}
+                    {% for error in form.passport_number.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="passport_issuer">Кем выдан паспорт</label>
+                <input required value="{{ object.passport_issuer }}" type="text" id="passport_issuer"
+                       name="passport_issuer"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.passport_issuer.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="passport_issue_at">Дата выдачи паспорта</label>
+                <input required value="{{ object.passport_issue_at|date:'Y-m-d' }}" type="date" id="passport_issue_at"
+                       name="passport_issue_at" class="form-control">
+                {% if form.errors %}
+                    {% for error in form.passport_issue_at.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_number">Идентификационный номер</label>
+                <input required value="{{ object.id_number }}" type="text" id="id_number" name="id_number"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.id_number.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="birth_city">Место рождения</label>
+                <input required value="{{ object.birth_city }}" type="text" id="birth_city" name="birth_city"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.birth_city.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="current_city">Место проживания</label>
+                <input required value="{{ object.current_city }}" type="text" id="current_city" name="current_city"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.current_city.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="current_live_address">Адрес фактического проживания</label>
+                <input required value="{{ object.current_live_address }}" type="text" id="current_live_address"
+                       name="current_live_address" class="form-control">
+                {% if form.errors %}
+                    {% for error in form.current_live_address.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="home_phone_number">Телефон домашний</label>
+                <input placeholder="+XXXXXXXXXXXX" pattern="^[0-9\-\+]{13}$"
+                       data-valid-example="+375259357914" value="{{ object.home_phone_number }}" type="text"
+                       id="home_phone_number"
+                       name="home_phone_number" class="form-control masked">
+                {% if form.errors %}
+                    {% for error in form.home_phone_number.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="mobile_phone_number">Телефон мобильный</label>
+                <input placeholder="+XXXXXXXXXXXX" pattern="^[0-9\-\+]{13}$"
+                       data-valid-example="+375259357914" value="{{ object.mobile_phone_number }}" type="text"
+                       id="mobile_phone_number"
+                       name="mobile_phone_number" class="form-control masked">```
+                {% if form.errors %}
+                    {% for error in form.mobile_phone_number.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="email">Электронная почта</label>
+                <input value="{{ object.email }}" type="email" id="email" name="email" class="form-control">
+                {% if form.errors %}
+                    {% for error in form.email.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="work_place">Место работы</label>
+                <input value="{{ object.work_place }}" type="text" id="work_place" name="work_place"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.work_place.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="work_occupation">Должность</label>
+                <input value="{{ object.work_occupation }}" type="text" id="work_occupation" name="work_occupation"
+                       class="form-control">
+                {% if form.errors %}
+                    {% for error in form.work_occupation.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="city_of_residence">Город прописки</label>
+                <input required value="{{ object.city_of_residence }}" type="text" id="city_of_residence"
+                       name="city_of_residence" class="form-control">
+                {% if form.errors %}
+                    {% for error in form.city_of_residence.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="marital_status">Семейное положение</label>
+                <select required name="marital_status" id="marital_status" class="form-control">
+                    <option selected="{% if object.marital_status == 'married' %} selected {% endif %}" value="married">
+                        Женат/Замужем
+                    </option>
+                    <option selected="{% if object.marital_status == 'divorced' %} selected {% endif %}"
+                            value="divorced">Разведен/Разведена
+                    </option>
+                    <option selected="{% if object.marital_status == 'widowed' %} selected {% endif %}" value="widowed">
+                        Вдовец/Вдова
+                    </option>
+                    <option selected="{% if object.marital_status == 'not_married' %} selected {% endif %}"
+                            value="not_married">Не женат/Не замужем
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="citizenship">Гражданство</label>
+                <select required name="citizenship" id="citizenship" class="form-control">
+                    <option selected="{% if object.citizenship == 'uzbek' %} selected {% endif %}" value="uzbek">Узбек
+                    </option>
+                    <option selected="{% if object.citizenship == 'belarussian' %} selected {% endif %}"
+                            value="belarussian">Белорус
+                    </option>
+                    <option selected="{% if object.citizenship == 'russian' %} selected {% endif %}" value="russian">
+                        Русский
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="is_disabled">Инвалидность</label>
+                <select required name="is_disabled" id="is_disabled" class="form-control">
+                    <option selected="{% if object.is_disabled == 'not_disabled' %} selected {% endif %}"
+                            value="not_disabled">Инвалидность отсуствует
+                    </option>
+                    <option selected="{% if object.is_disabled == 'first_group' %} selected {% endif %}"
+                            value="first_group">Первая группа инвалидности
+                    </option>
+                    <option selected="{% if object.is_disabled == 'second_group' %} selected {% endif %}"
+                            value="second_group">Вторая группа инвалидности
+                    </option>
+                    <option selected="{% if object.is_disabled == 'third_group' %} selected {% endif %}"
+                            value="third_group">Третья группа инвалидности
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name">Пенсионер</label>
+                <input required type="checkbox" id="name" name="name" {% if object.is_retired %}checked{% endif %}>
+            </div>
+            <div class="form-group">
+                <label for="name">Ежемесячный доход</label>
+                <input value="{{ object.monthly_income }}" type="number" id="name" name="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">
+                    Сохранить
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
