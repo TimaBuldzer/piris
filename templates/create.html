@@ -84,7 +84,8 @@
             </div>
             <div class="form-group">
                 <label for="birth_at">Дата рождения</label>
-                <input required type="date" id="birth_at" name="birth_at" class="form-control">
+                <input required type="date" id="birth_at" name="birth_at" class="form-control"
+                >
                 {% if form.errors %}
                     {% for error in form.birth_at.errors %}
                         <div class="alert alert-danger">
@@ -304,4 +305,10 @@
             </div>
         </form>
     </div>
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.querySelector("#birth_at").setAttribute('max', today);
+        document.querySelector("#passport_issue_at").setAttribute('max', today);
+        console.log(today)
+    </script>
 {% endblock %}

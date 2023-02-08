@@ -321,4 +321,10 @@
             </div>
         </form>
     </div>
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.querySelector("#birth_at").setAttribute('max', today);
+        document.querySelector("#passport_issue_at").setAttribute('max', today);
+        console.log(today)
+    </script>
 {% endblock %}
